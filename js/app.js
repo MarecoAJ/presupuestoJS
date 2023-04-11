@@ -41,8 +41,9 @@ let totalEgresos = () => {
 let cargarCabecero = () => {
     let presupuesto = totalIngresos() - totalEgresos();
     let porcentajeEgreso = totalEgresos() / totalIngresos();
-    divPresupuesto.innerHTML = presupuesto; 
-    divPorcentaje.innerHTML = porcentajeEgreso;  
+   
+    divPresupuesto.innerHTML = presupuesto;
+    divPorcentaje.innerHTML = porcentajeEgreso;
     divIngresos.innerHTML = totalIngresos();
     divEgresos.innerHTML = totalEgresos();
 }
