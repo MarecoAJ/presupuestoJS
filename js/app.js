@@ -2,20 +2,24 @@ const divPresupuesto = document.getElementById("presupuesto");
 const divPorcentaje = document.getElementById("porcentaje");
 const divIngresos = document.getElementById("ingresos");
 const divEgresos = document.getElementById("egresos");
+const divListaIngreso = document.getElementById("lista-ingresos");
+const divListaEgreso = document.getElementById("lista-egresos");
 
 const ingresos = [
-    new Ingreso("Salario", 2100.00),
+    new Ingreso("Sueldo", 2100.00),
     new Ingreso("venta coche", 1500)
 ];
 
 const egresos = [
-    new Egreso("renta", 900),
+    new Egreso("alquiler", 900),
     new Egreso("ropa", 400)
 ];
 
 let cargarApp = () => {
     cargarCabecero();
-}
+    cargarIngresos();
+    cargarEgresos();
+};
 
 let totalIngresos = () => {
     let totalIngreso = 0;
@@ -25,7 +29,7 @@ let totalIngresos = () => {
     }
 
     return totalIngreso;
-}
+};
 
 let totalEgresos = () => {
     let totalEgreso = 0;
@@ -35,7 +39,7 @@ let totalEgresos = () => {
     }
 
     return totalEgreso;
-}
+};
 
 
 let cargarCabecero = () => {
@@ -46,13 +50,71 @@ let cargarCabecero = () => {
     divPorcentaje.innerHTML = formatoPorcentaje(porcentajeEgreso);
     divIngresos.innerHTML = formatoMoneda(totalIngresos());
     divEgresos.innerHTML = formatoMoneda(totalEgresos());
-}
+};
 
 const formatoMoneda = (valor) => {
-    return valor.toLocaleString("en-US", (style: 'currency',
-        currency: 'USD', minimumFractionDigits: 2));
-}
+    return valor.toLocaleString("en-US", {
+        style: 'currency',
+        currency: 'USD', minimumFractionDigits: 2
+    });
+};
 
 const formatoPorcentaje = (valor) => {
-    return valor.toLocaleString("en-US", (style: 'percent', minimumFractionDigits:2))
-}
+    return valor.toLocaleString("en-US", { style: 'percent', minimumFractionDigits: 2 })
+};
+
+const cargarIngresos = () => {
+    let ingresosHtml = "";
+
+    for (let ingreso of ingresos) {
+        ingresosHtml += crearIngresoHtml(ingreso);
+    }
+
+    divListaIngreso.innerHTML = ingresosHtml;
+
+};
+
+const crearIngresoHtml = (ingreso) => {
+    let ingresosHtml = `<div class="elemento limpiarEstilos">
+    <div class="elemento_descripcion">${ingreso.descripcion}</div>
+    <div class="derecha limpiarEstilos">
+        <div class="elemento_valor">+ ${formatoMoneda(ingreso.valor)}</div>
+        <div class="elemento_eliminar">
+            <button class="elemento_eliminar--btn">
+                <ion-icon name="close-circle-outline"></ion-icon>
+            </button>
+        </div>
+    </div>
+</div>`;
+
+    return ingresosHtml;
+};
+
+const cargarEgresos = () => {
+    let egresosHtml = "";
+
+    for (let egreso of egresos) {
+        egresosHtml += crearEgresoHtml(egreso);
+    }
+
+    divListaEgreso.innerHTML = egresosHtml;
+
+};
+
+const crearEgresoHtml = (egreso) => {
+    let egresosHtml = `<div class="elemento limpiarEstilos">
+    <div class="elemento_descripcion">${egreso.descripcion}</div>
+    <div class="derecha limpiarEstilos">
+        <div class="elemento_valor">- ${formatoMoneda(egreso.valor)}</div>
+        <div class="elemento_porcentaje">${formatoPorcentaje(egreso.valor / totalEgresos())}</div>
+        <div class="elemento_eliminar">
+            <button class="elemento_eliminar--btn">
+                <ion-icon name="close-circle-outline"></ion-icon>
+            </button>
+        </div>
+    </div>
+</div>`;
+
+    return egresosHtml;
+};
+
